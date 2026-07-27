@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wallet — Money Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Wallet</h1>
+    <div style="display:flex; align-items:center; gap:16px;">
+      <span id="today"></span>
+      <div class="user-badge" id="userBadge"></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="label">Current balance</div>
+      <div class="amount" id="balance">₹0</div>
+    </div>
+    <div class="stats">
+      <div class="stat in"><span>Income</span><b id="totalIncome">₹0</b></div>
+      <div class="stat out"><span>Expense</span><b id="totalExpense">₹0</b></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Add a transaction</h2>
+      <form id="form">
+        <input class="desc" id="desc" placeholder="What was it for?" required>
+        <input id="amount" type="number" step="0.01" placeholder="Amount" required>
+        <input id="txDate" type="date" required>
+        <select id="category">
+          <option>Food</option><option>Transport</option><option>Bills</option>
+          <option>Shopping</option><option>Health</option><option>Salary</option>
+          <option>Investment</option><option>Other</option>
+        </select>
+        <div class="toggle">
+          <button type="button" data-type="income">Income</button>
+          <button type="button" data-type="expense" class="active">Expense</button>
+        </div>
+        <button class="submit" type="submit">Add transaction</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Spending by category</h2>
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <h2>Daily trend <span id="trendLabel" class="trend-label"></span></h2>
+    <canvas id="trendChart"></canvas>
+  </div>
+
+  <div class="card" style="margin-top:18px;">
+    <div class="row" style="justify-content:space-between; margin-bottom:10px;">
+      <h2 style="margin:0;">Recent transactions</h2>
+      <div class="filter-bar">
+        <button data-filter="all" class="active">All</button>
+        <button data-filter="day">Day</button>
+        <button data-filter="month">Month</button>
+        <input type="date" id="dayPicker" style="display:none;">
+        <input type="month" id="monthPicker" style="display:none;">
+      </div>
+    </div>
+    <div class="period-stats" id="periodStats"></div>
+    <div class="tx-list" id="txList"></div>
+  </div>
+
+  <div class="card ai-card">
+    <div class="row">
+      <h2 style="margin:0;">AI money coach</h2>
+      <button class="ai-btn" id="aiBtn">Analyse my spending</button>
+    </div>
+    <div class="ai-output placeholder" id="aiOutput">Add a few transactions, then ask for suggestions — the AI looks at your habits and gives practical advice on where to save.</div>
+  </div>
+</div>
+
+<!-- core tracker logic (transactions, chart, auth) -->
+<script src="js/script.js"></script>
+<!-- separate AI module, only handles the AI coach button -->
+<script src="js/ai.js"></script>
+</body>
+</html>

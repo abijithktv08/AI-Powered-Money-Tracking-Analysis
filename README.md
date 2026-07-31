@@ -61,15 +61,22 @@ The AI analyzes the user's financial data and can provide insights such as:
 
 
 AI-Money-Tracker/
-│
-├── static/
-│   ├── style.css
+├── api
+│   └── analyze.js
+├── css/
+│   └── style.css
+├── js/
+│   └── ai.js
+│   └── login.js
 │   └── script.js
 │
-├── templates/
-│   └── index.html
+├── server/
+│   └── server.js
+│   └── .env
+│   └── package.json
 │
-├── app.py
+├──index.html
+├──login.html
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -113,10 +120,10 @@ Add it to `.gitignore`:
 .env
 ```
 
-### 5. Run the application
+### 5. Run the application (if you want to run in this local pc)
 
 ```bash
-python app.py
+node server.js 
 ```
 
 Open the local URL shown in the terminal in your browser.

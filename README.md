@@ -38,11 +38,7 @@ The AI analyzes the user's financial data and can provide insights such as:
 * HTML
 * CSS
 * JavaScript
-
-**Backend**
-
-* Python / Flask
-
+  
 **Database**
 
 * Database for storing income and expense transactions

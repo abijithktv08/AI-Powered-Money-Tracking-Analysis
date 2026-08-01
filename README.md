@@ -59,7 +59,7 @@ The AI analyzes the user's financial data and can provide insights such as:
 
 ## 📂 Project Structure
 
-
+```text
 AI-Money-Tracker/
 ├── api
 │   └── analyze.js
@@ -76,7 +76,7 @@ AI-Money-Tracker/
 ├──index.html
 ├──login.html
 └── README.md
-
+```
 
 > The project structure may vary depending on the current implementation.
 

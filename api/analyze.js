@@ -1,8 +1,3 @@
-// Vercel turns this file into a live endpoint automatically: /api/analyze
-// This is the GEMINI version — swap this in for api/analyze.js when you want to use it.
-// The API key is read from a Vercel Environment Variable named GEMINI_API_KEY
-// (set in Settings → Environment Variables), never written in this file.
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Use POST" });

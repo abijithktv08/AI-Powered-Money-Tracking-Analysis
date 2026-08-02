@@ -1,4 +1,3 @@
-// ---------- require sign-in ----------
 const user = JSON.parse(localStorage.getItem("user") || "null");
 if (!user) {
   window.location.href = "login.html";
@@ -13,26 +12,25 @@ document.getElementById("logoutBtn").addEventListener("click", ()=>{
   window.location.href = "login.html";
 });
 
-// ---------- state ----------
 let transactions = [];
 let selectedType = "expense";
 let chart, trendChart;
-const storageKey = "transactions_" + user.email; // keeps each Gmail account's data separate
+const storageKey = "transactions_" + user.email; 
 
-const todayStr = new Date().toISOString().slice(0,10);   // e.g. "2026-07-26"
-const monthStr = todayStr.slice(0,7);                     // e.g. "2026-07"
+const todayStr = new Date().toISOString().slice(0,10);   
+const monthStr = todayStr.slice(0,7);                     
 
-// day/month filter for the transaction list + trend chart
-let filterMode = "all";     // "all" | "day" | "month"
+
+let filterMode = "all";     
 let filterDate = todayStr;
 let filterMonth = monthStr;
 
 document.getElementById("today").textContent = new Date().toLocaleDateString(undefined,{weekday:"long", month:"long", day:"numeric"});
-document.getElementById("txDate").value = todayStr;   // default new entries to today
+document.getElementById("txDate").value = todayStr;   
 document.getElementById("dayPicker").value = todayStr;
 document.getElementById("monthPicker").value = monthStr;
 
-// ---------- filter bar (Day / Month / All) ----------
+
 document.querySelectorAll(".filter-bar button").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     document.querySelectorAll(".filter-bar button").forEach(b=>b.classList.remove("active"));
@@ -47,14 +45,14 @@ document.querySelectorAll(".filter-bar button").forEach(btn=>{
 document.getElementById("dayPicker").addEventListener("change", e=>{ filterDate = e.target.value; render(); });
 document.getElementById("monthPicker").addEventListener("change", e=>{ filterMonth = e.target.value; render(); });
 
-// returns only the transactions matching the current filter
+
 function getFilteredTransactions(){
   if(filterMode==="day")   return transactions.filter(t=>t.date===filterDate);
   if(filterMode==="month") return transactions.filter(t=>t.date.slice(0,7)===filterMonth);
   return transactions;
 }
 
-// ---------- persistence (browser localStorage — data stays on this device) ----------
+
 function loadData(){
   const saved = localStorage.getItem(storageKey);
   transactions = saved ? JSON.parse(saved) : [];
@@ -64,7 +62,7 @@ function saveData(){
   localStorage.setItem(storageKey, JSON.stringify(transactions));
 }
 
-// ---------- income/expense toggle ----------
+
 document.querySelectorAll(".toggle button").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     document.querySelectorAll(".toggle button").forEach(b=>b.classList.remove("active"));
@@ -88,7 +86,7 @@ document.getElementById("form").addEventListener("submit", e=>{
   });
 
   e.target.reset();
-  document.getElementById("txDate").value = todayStr; // reset picker back to today after reset() clears it
+  document.getElementById("txDate").value = todayStr; 
   saveData();
   render();
 });
@@ -99,16 +97,14 @@ function deleteTx(id){
   render();
 }
 
-// ---------- render ----------
+
 function render(){
-  // hero always shows all-time totals — balance is cumulative, not period-based
   const income = transactions.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
   const expense = transactions.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
   document.getElementById("balance").textContent = "₹" + (income-expense).toLocaleString();
   document.getElementById("totalIncome").textContent = "₹" + income.toLocaleString();
   document.getElementById("totalExpense").textContent = "₹" + expense.toLocaleString();
 
-  // everything below reacts to the Day/Month/All filter
   const filtered = getFilteredTransactions();
   const fIncome = filtered.filter(t=>t.type==="income").reduce((s,t)=>s+t.amount,0);
   const fExpense = filtered.filter(t=>t.type==="expense").reduce((s,t)=>s+t.amount,0);
@@ -155,8 +151,6 @@ function renderChart(list){
     options:{ plugins:{ legend:{ labels:{ color:"#1f2420" } } } }
   });
 }
-
-// bar chart of expenses per day, for whichever month is relevant to the current filter
 function renderTrend(){
   const month = filterMode==="month" ? filterMonth : monthStr;
   document.getElementById("trendLabel").textContent = "· " + month;

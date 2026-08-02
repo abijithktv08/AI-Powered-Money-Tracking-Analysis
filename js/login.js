@@ -1,9 +1,9 @@
-// If already signed in, skip straight to the tracker
+
 if (localStorage.getItem("user")) {
   window.location.href = "index.html";
 }
 
-// Google calls this automatically after a successful Gmail sign-in
+
 function handleCredentialResponse(response) {
   const payload = decodeJwt(response.credential);
 
@@ -17,7 +17,6 @@ function handleCredentialResponse(response) {
   window.location.href = "index.html";
 }
 
-// Google's credential is a JWT — this reads the middle part (the payload) without any library
 function decodeJwt(token) {
   const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
   return JSON.parse(decodeURIComponent(escape(atob(base64))));

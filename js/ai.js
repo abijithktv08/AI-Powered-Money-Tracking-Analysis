@@ -1,3 +1,4 @@
+require("dotenv").config();
 console.log("ai.js loaded");
 
 const aiBtn = document.getElementById("aiBtn");

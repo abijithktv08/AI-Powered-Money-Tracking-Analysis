@@ -1,4 +1,3 @@
-require("dotenv").config();
 console.log("ai.js loaded");
 
 const aiBtn = document.getElementById("aiBtn");
@@ -19,13 +18,16 @@ aiBtn.addEventListener("click", async () => {
   aiOutput.textContent = "Reading your transactions...";
 
   try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ transactions })
-    });
+    const response = await fetch(
+      "http://localhost:3000/api/analyze",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ transactions })
+      }
+    );
 
     const data = await response.json();
 

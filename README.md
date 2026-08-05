@@ -69,13 +69,10 @@ AI-Money-Tracker/
 │   └── ai.js
 │   └── login.js
 │   └── script.js
-├── server/
-│   └── server.js
-│   └── .env
-│   └── package.json
 ├──index.html
 ├──login.html
 └── README.md
+└──package.json
 ```
 
 > The project structure may vary depending on the current implementation.

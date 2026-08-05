@@ -1,55 +1,73 @@
-require("dotenv").config();
-console.log("ai.js loaded");
-const express = require("express");
-const router = express.Router();
-const aiBtn = document.getElementById("aiBtn");
-const aiOutput = document.getElementById("aiOutput");
-
-console.log("AI button:", aiBtn);
-
-aiBtn.addEventListener("click", async () => {
-  console.log("Analyze button clicked!");
-
-  if (transactions.length === 0) {
-    aiOutput.textContent = "Add a few transactions first.";
-    return;
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  aiBtn.disabled = true;
-  aiBtn.textContent = "Thinking...";
-  aiOutput.textContent = "Reading your transactions...";
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+  const { transactions } = req.body;
+
+  const summary = transactions
+    .map(
+      (t) =>
+        `${t.type} | ${t.category} | ₹${t.amount} | ${t.desc}`
+    )
+    .join("\n");
+
+  const prompt = `You are a friendly personal finance coach.
+
+Here are the user's transactions:
+
+${summary}
+
+Give:
+1. One-line summary.
+2. Top 2 spending categories.
+3. Exactly 4 practical saving tips.
+
+Return plain text only.`;
 
   try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ transactions })
-    });
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": GEMINI_API_KEY,
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: prompt,
+                },
+              ],
+            },
+          ],
+        }),
+      }
+    );
 
     const data = await response.json();
 
-    console.log("Status:", response.status);
-    console.log("Response:", data);
-
-    if (!response.ok) {
-      aiOutput.textContent =
-        "Error: " + (data.error || "Unknown server error");
-      return;
+    if (data.error) {
+      return res
+        .status(500)
+        .json({ error: data.error.message });
     }
 
-    aiOutput.textContent =
-      data.text || "No AI response generated.";
+    const text =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "No response generated.";
+
+    res.status(200).json({ text });
 
   } catch (error) {
-    console.error("AI ERROR:", error);
-
-    aiOutput.textContent =
-      "Could not connect to the AI server.";
-
-  } finally {
-    aiBtn.disabled = false;
-    aiBtn.textContent = "Analyse my spending";
+    console.error(error);
+    res.status(500).json({
+      error: "Failed to reach Gemini.",
+    });
   }
-});
+}

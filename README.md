@@ -1,4 +1,4 @@
-# 💰 AI-Powered Money Tracking & Analysis
+# 💰 MoneyMind-AI Powered Money Tracking & Analysis
 
 An intelligent personal finance web application that helps users **track income and expenses, analyze spending patterns, and gain AI-powered financial insights**.
 

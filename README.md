@@ -102,9 +102,10 @@ pip install -r requirements.txt
 ### 4. Configure environment variables
 
 Create a `.env` file and add the required API key.
+I recommend you to use gemini free tier api key for AI integration .
 
 ```env
-AI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key_here
 ```
 
 **Never upload your `.env` file or API keys to GitHub.**
